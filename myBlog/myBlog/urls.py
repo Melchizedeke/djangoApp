@@ -14,16 +14,39 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
-from users import views
 from django.contrib.auth import views as auth_views
+from users import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('users/', include("users.urls")),
-    path('users/', views.users, name="users"),
+    path('register/', include("users.urls")),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    path('', include("blog.urls"))
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('', include("blog.urls")),
+    path('profile/', views.profile, name='profile'),
+    path('admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+
+
+# from django.contrib import admin
+# from django.urls import path, include
+# from django.contrib.auth import views as auth_views
+# from users import views
+
+# urlpatterns = [
+#     path('register/', include("users.urls")),
+#     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+#     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+#     path('', include("blog.urls")),
+#     path('profile/', views.profile, name='profile'),
+#     path('admin/', admin.site.urls),  # Move this to the end
+# ]
+

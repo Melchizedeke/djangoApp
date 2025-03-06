@@ -23,6 +23,7 @@ class PostListView(LoginRequiredMixin, ListView):
     template_name = 'blog/home.html'
     context_object_name = 'posts'
     paginate_by = 5
+    ordering = ['-date_posted']
 
 
 class UserPostListView(LoginRequiredMixin, ListView):
@@ -30,7 +31,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
     template_name = 'blog/user_post.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-    paginate_by = 3
+    paginate_by = 5
 
     def get_queryset(self):
         user = get_object_or_404(User, username = self.kwargs.get('username'))
